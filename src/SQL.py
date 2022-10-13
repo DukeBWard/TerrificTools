@@ -1,9 +1,10 @@
 import psycopg2
+import dbcfg as cfg
 from sshtunnel import SSHTunnelForwarder
 
-username = "YOUR_CS_USERNAME"
-password = "YOUR_CS_PASSWORD"
-dbName = "YOUR_DB_NAME"
+username = cfg.sql["user"]
+password = cfg.sql["passwd"]
+dbName = "p32001_12"
 
 
 try:
