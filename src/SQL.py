@@ -1,6 +1,7 @@
 import psycopg2
 import dbcfg as cfg
 from sshtunnel import SSHTunnelForwarder
+import Driver
 
 username = cfg.sql["user"]
 password = cfg.sql["passwd"]
@@ -25,6 +26,9 @@ try:
 
         conn = psycopg2.connect(**params)
         curs = conn.cursor()
+
+        Driver.driver(conn,curs)
+
         print("Database connection established")
         conn.close()
 except:

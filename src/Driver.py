@@ -2,7 +2,7 @@
 
 # Login page before this???
 
-def driver():
+def driver(conn, cursor):
     
     command = "a"
     
