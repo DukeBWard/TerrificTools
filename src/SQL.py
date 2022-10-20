@@ -23,7 +23,6 @@ try:
             'port': server.local_bind_port
         }
 
-
         conn = psycopg2.connect(**params)
         curs = conn.cursor()
 
