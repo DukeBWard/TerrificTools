@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 import dbcfg as cfg
 from sshtunnel import SSHTunnelForwarder
 import Driver
@@ -31,8 +32,12 @@ def main():
             }
 
             conn = psycopg2.connect(**params)
-            cursor = conn.cursor()
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
             
+            work_mem = 2048
+            cursor.execute('SET work_mem TO %s', (work_mem,))
+            cursor.execute('SHOW work_mem')
+
             # cursor.execute("SELECT * FROM user_table")
             # records = cursor.fetchall()
             # print(records)
