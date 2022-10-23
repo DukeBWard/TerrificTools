@@ -46,7 +46,8 @@ def main():
             print("Database connection established")
             Driver.driver(conn,cursor)
             conn.close()
-    except:
+    except Exception as e:
+        print(e)
         print("Connection failed")
 
 if __name__ == "__main__":
