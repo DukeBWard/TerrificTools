@@ -7,28 +7,42 @@ username = cfg.sql["user"]
 password = cfg.sql["passwd"]
 dbName = "p32001_12"
 
+# 
+# 
+# YOU GOTTA RUN THIS FILE FIRST!!!S
+# 
+# 
 
-try:
-    with SSHTunnelForwarder(('starbug.cs.rit.edu', 22),
-                            ssh_username=username,
-                            ssh_password=password,
-                            remote_bind_address=('localhost', 5432)) as server:
-        server.start()
-        print("SSH tunnel established")
-        params = {
-            'database': dbName,
-            'user': username,
-            'password': password,
-            'host': 'localhost',
-            'port': server.local_bind_port
-        }
+def main():
 
-        conn = psycopg2.connect(**params)
-        curs = conn.cursor()
+    try:
+        with SSHTunnelForwarder(('starbug.cs.rit.edu', 22),
+                                ssh_username=username,
+                                ssh_password=password,
+                                remote_bind_address=('localhost', 5432)) as server:
+            server.start()
+            print("SSH tunnel established")
+            params = {
+                'database': dbName,
+                'user': username,
+                'password': password,
+                'host': 'localhost',
+                'port': server.local_bind_port
+            }
 
-        Driver.driver(conn,curs)
+            conn = psycopg2.connect(**params)
+            cursor = conn.cursor()
+            
+            # cursor.execute("SELECT * FROM user_table")
+            # records = cursor.fetchall()
+            # print(records)
+            # Driver.driver(conn,curs)
 
-        print("Database connection established")
-        conn.close()
-except:
-    print("Connection failed")
+            print("Database connection established")
+            Driver.driver(conn,cursor)
+            # conn.close()
+    except:
+        print("Connection failed")
+
+if __name__ == "__main__":
+    main()
