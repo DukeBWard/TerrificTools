@@ -10,7 +10,7 @@ dbName = "p32001_12"
 
 # 
 # 
-# YOU GOTTA RUN THIS FILE FIRST!!!S
+# YOU GOTTA RUN THIS FILE FIRST!!!
 # 
 # 
 
@@ -45,7 +45,7 @@ def main():
 
             print("Database connection established")
             Driver.driver(conn,cursor)
-            # conn.close()
+            conn.close()
     except:
         print("Connection failed")
 
