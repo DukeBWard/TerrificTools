@@ -17,7 +17,7 @@ def signup(conn, cursor, user, password, email):
     cursor.execute(f"select * from user_table where username='{user}' and pass='{password}'")
     records = cursor.fetchone()
     # Signup and login if not already signed up
-    if records["user"] == None and records["pass"] == None:
+    if records == None:
         cursor.execute(f"insert into user_table(createdate, lastaccess, username, pass, email) values\
             (CURRENT_DATE, CURRENT_DATE, '{user}', '{password}', '{email}') ")
         conn.commit()
