@@ -64,6 +64,9 @@ def driver(conn, cursor):
             
             elif command[0].lower() == "search" or command[0].lower() == "find":
                 print()
+                #
+                # This only works if the name or whatever is ONE WORD
+                # 
                 if command[1].lower() == "barcode":
                     records = search(conn,cursor,command[2],"barcode")
                 elif command[1].lower() == "name":
