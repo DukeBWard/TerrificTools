@@ -3,7 +3,12 @@
 # Login page before this???
 
 from controller.user_controller import *
+from controller.tools_controller import *
+from controller.category_controller import *
+from controller.catalog_controller import *
+from controller.request_ticket_controller import *
 from models.user_model import user_model
+from pprint import *
 
 def driver(conn, cursor):
     
@@ -48,6 +53,7 @@ def driver(conn, cursor):
         
         while True and account:
             command = input(account.username + ": ")
+            command = command.split()
             
             if command.lower() == "help":
                 print("Use one of the following commands: TODO")
@@ -55,6 +61,17 @@ def driver(conn, cursor):
 
             elif command.lower() == "quit" or command.lower() == "exit":
                 return
+            
+            elif command.lower() == "search" or command.lower() == "find":
+                records = None
+                if command[1].lower() == "barcode":
+                    records = search(conn,cursor,command[1],"barcode")
+                elif command[1].lower() == "name":
+                    records = search(conn,cursor,command[1],"name")
+                elif command[1].lower() == "category":
+                    records = search(conn,cursor,command[1],"category")
+                pprint(records)
+                    
             
         
             
