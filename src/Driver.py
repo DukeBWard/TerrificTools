@@ -55,14 +55,14 @@ def driver(conn, cursor):
             command = input(account.username + ": ")
             command = command.split()
             
-            if command.lower() == "help":
+            if command[0].lower() == "help":
                 print("Use one of the following commands: TODO")
                 continue
 
-            elif command.lower() == "quit" or command.lower() == "exit":
+            elif command[0].lower() == "quit" or command.lower() == "exit":
                 return
             
-            elif command.lower() == "search" or command.lower() == "find":
+            elif command[0].lower() == "search" or command.lower() == "find":
                 records = None
                 if command[1].lower() == "barcode":
                     records = search(conn,cursor,command[1],"barcode")
