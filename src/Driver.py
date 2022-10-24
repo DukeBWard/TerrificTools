@@ -2,6 +2,7 @@
 
 # Login page before this???
 
+from TerrificTools.src.controller.user_controller import signup
 from controller import user_controller
 from models.user_model import user_model
 
@@ -18,7 +19,14 @@ def driver(conn, cursor):
             account = user_controller.login(conn, cursor, user, password)
             if account == False: 
                 print("Login failed.")
-                return 
+                signupIn = input("Would you like to sign up? (y/n)")
+                if signupIn.lower() == 'y':
+                    user = input("Username: ")
+                    password = input("Password: ")
+                    email = input("Email: ")
+                    signup(conn, cursor, user, password, email)
+                elif signupIn.lower() == 'n':
+                    return
             
             command = input(account.username + ": ")
             

@@ -12,7 +12,10 @@ def login(conn, cursor, user, password):
     else:
         return False
 
-def signup(conn, cursor, user, password):
-    
+def signup(conn, cursor, user, password, email):
+    cursor.execute(f"insert into user_table(createdate, lastaccess, username, pass, email) values\
+        (CURRENT_DATE, CURRENT_DATE, '{user}', '{password}', '{email}') ")
+    conn.commit()
+    return True
 
     
