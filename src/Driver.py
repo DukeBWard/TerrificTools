@@ -46,7 +46,7 @@ def driver(conn, cursor):
             # Continue from this point assuming logged in or signed up
             # 
         
-        while True and  account:
+        while True and account:
             command = input(account.username + ": ")
             
             if command.lower() == "help":
