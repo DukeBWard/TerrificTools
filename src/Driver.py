@@ -8,7 +8,7 @@ from controller.category_controller import *
 from controller.catalog_controller import *
 from controller.request_ticket_controller import *
 from models.user_model import user_model
-from pprint import *
+import pprint
 
 def driver(conn, cursor):
     
@@ -59,18 +59,29 @@ def driver(conn, cursor):
                 print("Use one of the following commands: TODO")
                 continue
 
-            elif command[0].lower() == "quit" or command.lower() == "exit":
+            elif command[0].lower() == "quit" or command[0].lower() == "exit":
                 return
             
-            elif command[0].lower() == "search" or command.lower() == "find":
+            elif command[0].lower() == "search" or command[0].lower() == "find":
                 records = None
+                print()
                 if command[1].lower() == "barcode":
-                    records = search(conn,cursor,command[1],"barcode")
+                    records = search(conn,cursor,command[2],"barcode")
                 elif command[1].lower() == "name":
-                    records = search(conn,cursor,command[1],"name")
+                    records = search(conn,cursor,command[2],"name")
                 elif command[1].lower() == "category":
-                    records = search(conn,cursor,command[1],"category")
-                pprint(records)
+                    records = search(conn,cursor,command[2],"category")
+                if records == None:
+                    print("Nothing found.  Try again.")
+                for row in records:
+                    print("Barcode: {}".format(row[0]))
+                    print("Borrowed: {}".format(row[1]))
+                    print("Description: {}".format(row[2]))
+                    print("Tool Name: {}".format(row[3]))
+                    print("UserId: {}".format(row[4]))
+                    print("Category: {}".format(row[5]))
+                    print()
+                #pprint.pprint(records)
                     
             
         
