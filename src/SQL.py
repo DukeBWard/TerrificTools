@@ -38,14 +38,10 @@ def main():
             cursor.execute('SET work_mem TO %s', (work_mem,))
             cursor.execute('SHOW work_mem')
 
-            # cursor.execute("SELECT * FROM user_table")
-            # records = cursor.fetchall()
-            # print(records)
-            # Driver.driver(conn,curs)
-
             print("Database connection established")
             Driver.driver(conn,cursor)
             conn.close()
+
     except Exception as e:
         print(e)
         print("Connection failed")

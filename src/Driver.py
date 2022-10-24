@@ -42,7 +42,6 @@ def driver(conn, cursor):
             password = input("Password: ")
             email = input("Email: ")
             account = signup(conn, cursor, user, password, email)
-            continue
             # 
             # Continue from this point assuming logged in or signed up
             # 
