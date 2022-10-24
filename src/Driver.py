@@ -63,7 +63,6 @@ def driver(conn, cursor):
                 return
             
             elif command[0].lower() == "search" or command[0].lower() == "find":
-                records = None
                 print()
                 if command[1].lower() == "barcode":
                     records = search(conn,cursor,command[2],"barcode")
@@ -71,8 +70,8 @@ def driver(conn, cursor):
                     records = search(conn,cursor,command[2],"name")
                 elif command[1].lower() == "category":
                     records = search(conn,cursor,command[2],"category")
-                if records == None:
-                    print("Nothing found.  Try again.")
+                if len(records) == 0:
+                    print("Could not find that item.  Try again.")
                 for row in records:
                     print("Barcode: {}".format(row[0]))
                     print("Borrowed: {}".format(row[1]))
@@ -81,7 +80,7 @@ def driver(conn, cursor):
                     print("UserId: {}".format(row[4]))
                     print("Category: {}".format(row[5]))
                     print()
-                #pprint.pprint(records)
+                
                     
             
         

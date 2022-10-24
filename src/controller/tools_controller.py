@@ -4,9 +4,9 @@ def search(conn, cursor, param, type):
         cursor.execute(f"select * from tools_table where barcode={param}")
         records = cursor.fetchall()
     elif type == 'name':
-        cursor.execute(f"select * from tools_table where tool_name={param}")
+        cursor.execute(f"select * from tools_table where tool_name='{param}'")
         records = cursor.fetchall()
     elif type == 'category':
-        cursor.execute(f"select * from tools_table where type={param}")
+        cursor.execute(f"select * from tools_table where type='{param}'")
         records = cursor.fetchall()
     return records
