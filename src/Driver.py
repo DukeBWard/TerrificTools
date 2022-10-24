@@ -7,15 +7,19 @@ from models.user_model import user_model
 
 def driver(conn, cursor):
     
-    command = "a"
+    command = ""
+    account = None
     
-    while command.lower() != "quit" or command.lower() != "exit" :
-        command = input("What's your command?: ")
+    while True :
+        command = input("Login or Sign up: ")
         
-
         if command.lower() == "help":
             print("Use one of the following commands: TODO")
+            continue
         
+        elif command.lower() == "quit" or command.lower() == "exit":
+            return
+
         elif command.lower() == "login":
             user = input("Username: ")
             password = input("Password: ")
@@ -29,6 +33,7 @@ def driver(conn, cursor):
                     email = input("Email: ")
                     account = signup(conn, cursor, user, password, email)
                     print("User: "+user+" signed up")
+                    continue
                 else:
                     return
 
@@ -37,11 +42,21 @@ def driver(conn, cursor):
             password = input("Password: ")
             email = input("Email: ")
             account = signup(conn, cursor, user, password, email)
+            continue
             # 
             # Continue from this point assuming logged in or signed up
             # 
-            command = input(account.username + ": ")
         
+        while True and  account:
+            command = input(account.username + ": ")
+            
+            if command.lower() == "help":
+                print("Use one of the following commands: TODO")
+                continue
+
+            elif command.lower() == "quit" or command.lower() == "exit":
+                return
+            
         
             
 
