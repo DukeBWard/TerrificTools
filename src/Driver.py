@@ -15,8 +15,10 @@ def driver(conn, cursor):
         if command == "login":
             user = input("Username: ")
             password = input("Password: ")
-            account = user_controller.login(cursor, user, password)
-            if account == False: return
+            account = user_controller.login(conn, cursor, user, password)
+            if account == False: 
+                print("Login failed.")
+                return 
             
             command = input(account.username + ": ")
             
