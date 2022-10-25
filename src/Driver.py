@@ -119,4 +119,3 @@ def driver(conn, cursor):
                 if (status == "outgoing"):
                     manage_outgoing_tickets(conn, cursor, account)
                 
-        # calling the appropriate command based on input
