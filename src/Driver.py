@@ -67,17 +67,25 @@ def driver(conn, cursor):
              
                 if command[1].lower() == "barcode":
                     records = search(conn,cursor,command[2],"barcode")
+
                 elif command[1].lower() == "name":
                     param = " ".join(command[2:])
-                    records = search(conn,cursor,param,"name")
+                    if len(command) == 3:
+                        if command[2] == "asc" or command[2] == "desc":
+                            records = sort(conn, cursor, command[2].lower(), command[1].lower())
+                    else:
+                        records = search(conn,cursor,param,"name")
+                        
                 elif command[1].lower() == "category":
-                    # param = " ".join(command[2:])
-                    if len(command) == 3 and command[3] == "asc":
-                        pass
+                    if len(command) == 3:
+                        if command[2] == "asc" or command[2] == "desc":
+                            records = sort(conn, cursor, command[2].lower(), command[1].lower())
+                    else:
+                        records = search(conn,cursor,command[2],"category")
 
-                    records = search(conn,cursor,command[2],"category")
                 if len(records) == 0:
                     print("Could not find that item.  Try again.")
+
                 for row in records:
                     print("Barcode: {}".format(row[0]))
                     print("Borrowed: {}".format(row[1]))
@@ -94,11 +102,5 @@ def driver(conn, cursor):
                 create_ticket(conn, cursor, account, date_needed, duration, barcode)
                 continue
                 
-                    
-            
         
-            
-
-
-
         # calling the appropriate command based on input
