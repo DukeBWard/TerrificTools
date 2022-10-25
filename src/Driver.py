@@ -16,7 +16,7 @@ def driver(conn, cursor):
     account = None
     
     while True :
-        command = input("Login or Sign up: ")
+        command = input("Login or sign up: ")
         
         if command.lower() == "help":
             print("Use one of the following commands: TODO")
@@ -73,7 +73,7 @@ def driver(conn, cursor):
                 elif command[1].lower() == "category":
                     # param = " ".join(command[2:])
                     if len(command) == 3 and command[3] == "asc":
-                        
+                        pass
 
                     records = search(conn,cursor,command[2],"category")
                 if len(records) == 0:

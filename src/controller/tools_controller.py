@@ -20,3 +20,4 @@ def sort(conn, cursor, param, type):
     elif type == 'category':
         cursor.execute(f"select * from tools_table where type='{param}'")
         records = cursor.fetchall()
+    return records
