@@ -83,6 +83,13 @@ def driver(conn, cursor):
                     print("UserId: {}".format(row[4]))
                     print("Category: {}".format(row[5]))
                     print()
+
+            elif command[0].lower() == "cticket":
+                date_needed = input("Date needed: ")
+                duration = input("Duration: ")
+                barcode = input("Tool barcode: ")
+                create_ticket(conn, cursor, account, date_needed, duration, barcode)
+                continue
                 
                     
             
