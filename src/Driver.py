@@ -110,5 +110,13 @@ def driver(conn, cursor):
                 barcode = input("Tool barcode: ")
                 create_ticket(conn, cursor, account, date_needed, duration, barcode)
                 continue
+
+            # MANAGE TICKET
+            elif command[0].lower() == "mticket":
+                status = input("Incoming or Outgoing requests: ")
+                if (status == "incoming"):
+                    manage_incoming_tickets(conn, cursor, account)
+                if (status == "outgoing"):
+                    manage_outgoing_tickets(conn, cursor, account)
                 
         # calling the appropriate command based on input
