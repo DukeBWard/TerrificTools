@@ -55,13 +55,21 @@ def driver(conn, cursor):
             command = input(account.username + ": ")
             command = command.split()
             
+            # HELP
             if command[0].lower() == "help":
                 print("Use one of the following commands: TODO")
                 continue
-
+            
+            # QUIT/EXIT
             elif command[0].lower() == "quit" or command[0].lower() == "exit":
                 return
             
+            # SIGNOUT
+            elif command[0].lower() == "sign out" or command[0].lower() == "signout":
+                account = None
+                break
+
+            # SEARCH AND SORT
             elif command[0].lower() == "search" or command[0].lower() == "find":
                 print()
              
@@ -95,6 +103,7 @@ def driver(conn, cursor):
                     print("Category: {}".format(row[5]))
                     print()
 
+            # CREATE TICKET
             elif command[0].lower() == "cticket":
                 date_needed = input("Date needed: ")
                 duration = input("Duration: ")
@@ -102,5 +111,4 @@ def driver(conn, cursor):
                 create_ticket(conn, cursor, account, date_needed, duration, barcode)
                 continue
                 
-        
         # calling the appropriate command based on input
