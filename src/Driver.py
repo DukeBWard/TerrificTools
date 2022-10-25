@@ -64,15 +64,15 @@ def driver(conn, cursor):
             
             elif command[0].lower() == "search" or command[0].lower() == "find":
                 print()
-                #
-                # This only works if the name or whatever is ONE WORD
-                # 
+             
                 if command[1].lower() == "barcode":
                     records = search(conn,cursor,command[2],"barcode")
                 elif command[1].lower() == "name":
-                    records = search(conn,cursor,command[2],"name")
+                    param = " ".join(command[2:])
+                    records = search(conn,cursor,param,"name")
                 elif command[1].lower() == "category":
-                    records = search(conn,cursor,command[2],"category")
+                    param = " ".join(command[2:])
+                    records = search(conn,cursor,param,"category")
                 if len(records) == 0:
                     print("Could not find that item.  Try again.")
                 for row in records:
