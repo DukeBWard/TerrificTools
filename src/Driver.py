@@ -71,8 +71,11 @@ def driver(conn, cursor):
                     param = " ".join(command[2:])
                     records = search(conn,cursor,param,"name")
                 elif command[1].lower() == "category":
-                    param = " ".join(command[2:])
-                    records = search(conn,cursor,param,"category")
+                    # param = " ".join(command[2:])
+                    if len(command) == 3 and command[3] == "asc":
+                        
+
+                    records = search(conn,cursor,command[2],"category")
                 if len(records) == 0:
                     print("Could not find that item.  Try again.")
                 for row in records:
