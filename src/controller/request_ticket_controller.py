@@ -67,3 +67,43 @@ def manage_outgoing_tickets(conn, cursor, user):
             cursor.execute(f"delete from request_ticket_table where reqid= '{reqid}'")
             conn.commit()
     
+
+# User should be able to return the tool they borrowed
+# very similar to managing request tickets
+
+def return_borrowed_tool(conn, cursor, user):
+    userid = user.userid
+    cursor.execute(f"select * from request_ticket_table where userid= '{userid}'")
+    requests = cursor.fetchall()
+    print("---------------------")
+    for row in requests:
+        print("Request ID: {}".format(row[0]))
+        print("Date needed: {}".format(row[1]))
+        print("Duration: {}".format(row[2]))
+        print("Current status: {}".format(row[3]))
+        print("Tool barcode: {}".format(row[4]))
+        print("Requested User: {}".format(row[5]))
+        print("---------------------")
+    
+    reqid = input("Which request would you like to manage: ")
+    cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
+    toolowner = cursor.fetchone()
+    if (toolowner[0] == userid):
+        status = input("Would you like to close the request and return the tool?: ")
+        if (status == "yes"):
+            
+            # 1= change the req ticket, make availability == false YES
+            cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
+            barcode = cursor.fetchone()
+            cursor.execute(f"update request_ticket_table set status= '{False}' where reqid= '{reqid}'")
+
+            # 2- change tool, make available in tool == true YES
+            cursor.execute(f"update tools_table set availiable= '{True}' where barcode={barcode[0]}")
+
+            # 3- must store when the tool was returned but where? (ADDING IT TO THE REQUEST TICKET)
+            
+            # prompt the user for the date
+            return_date = input("What is the return date (Today's date)?: ")
+            # update the return date
+            cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where reqid= '{reqid}'")
+            conn.commit()
