@@ -25,6 +25,7 @@ def manage_incoming_tickets(conn, cursor, user):
         print("Current status: {}".format(row[3]))
         print("Tool barcode: {}".format(row[4]))
         print("Requested User: {}".format(row[5]))
+        print("Return date: {}".format(row[7]))
         print("---------------------")
 
     reqid = input("Which request would you like to manage: ")
@@ -58,6 +59,7 @@ def manage_outgoing_tickets(conn, cursor, user):
         print("Current status: {}".format(row[3]))
         print("Tool barcode: {}".format(row[4]))
         print("Tool owner: {}".format(row[6]))
+        print("Return date: {}".format(row[7]))
         print("---------------------")
 
     reqid = input("Which request would you like to manage: ")
@@ -85,6 +87,7 @@ def return_borrowed_tool(conn, cursor, user):
         print("Current status: {}".format(row[3]))
         print("Tool barcode: {}".format(row[4]))
         print("Requested User: {}".format(row[5]))
+        print("Return date: {}".format(row[7]))
         print("---------------------")
     
     reqid = input("Which request would you like to manage: ")
