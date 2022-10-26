@@ -33,10 +33,12 @@ def manage_incoming_tickets(conn, cursor, user):
     if (toolowner[0] == userid):
         status = input("Would you like to accept or deny request: ")
         if (status == "accept"):
+            return_date = input("What should the return date be (yyyy-mm-dd): ")
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
             cursor.execute(f"update request_ticket_table set status= '{True}' where reqid= '{reqid}'")
             cursor.execute(f"update tools_table set availiable= '{False}' where barcode={barcode[0]}")
+            cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where barcode={barcode[0]}")
             conn.commit()
 
         elif (status == "deny"):
