@@ -14,6 +14,7 @@ def driver(conn, cursor):
     
     command = ""
     account = None
+    records = None
     
     while True :
         command = input("Login or sign up: ")
@@ -81,6 +82,8 @@ def driver(conn, cursor):
                     if len(command) == 3:
                         if command[2] == "asc" or command[2] == "desc":
                             records = sort(conn, cursor, command[2].lower(), command[1].lower())
+                        else: 
+                            records = search(conn,cursor,param,"name")
                     else:
                         records = search(conn,cursor,param,"name")
                         
@@ -88,20 +91,22 @@ def driver(conn, cursor):
                     if len(command) == 3:
                         if command[2] == "asc" or command[2] == "desc":
                             records = sort(conn, cursor, command[2].lower(), command[1].lower())
+                        else:
+                            records = search(conn,cursor,command[2],"category")
                     else:
                         records = search(conn,cursor,command[2],"category")
 
-                if len(records) == 0:
+                if records == None:
                     print("Could not find that item.  Try again.")
-
-                for row in records:
-                    print("Barcode: {}".format(row[0]))
-                    print("Borrowed: {}".format(row[1]))
-                    print("Description: {}".format(row[2]))
-                    print("Tool Name: {}".format(row[3]))
-                    print("UserId: {}".format(row[4]))
-                    print("Category: {}".format(row[5]))
-                    print()
+                if records != None:
+                    for row in records:
+                        print("Barcode: {}".format(row[0]))
+                        print("Borrowed: {}".format(row[1]))
+                        print("Description: {}".format(row[2]))
+                        print("Tool Name: {}".format(row[3]))
+                        print("UserId: {}".format(row[4]))
+                        print("Category: {}".format(row[5]))
+                        print()
 
             # CREATE TICKET
             elif command[0].lower() == "cticket":
