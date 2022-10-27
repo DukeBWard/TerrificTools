@@ -6,9 +6,9 @@ def create_ticket(conn,cursor,user,date_needed,duration,barcode):
     tool = cursor.fetchone()
     ownerid = tool["userid"]
     userid = user.userid
-    if (tool["availiable"] == True): 
+    if (tool["available"] == True): 
         cursor.execute(f"insert into request_ticket_table(dateneeded, duration, status, barcode, userid, toolowner) values\
-            ('{date_needed}', '{duration}', False, '{barcode}', '{userid}', '{ownerid}') ")
+            ('{date_needed}', '{duration}', 'pending', '{barcode}', '{userid}', '{ownerid}') ")
         conn.commit()
     else:
         return False
@@ -31,19 +31,21 @@ def manage_incoming_tickets(conn, cursor, user):
     reqid = input("Which request would you like to manage: ")
     cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
     toolowner = cursor.fetchone()
-    if (toolowner[0] == userid):
+    cursor.execute(f"select status from request_ticket_table where reqid='{reqid}'")
+    reqstatus = cursor.fetchone()
+    if (toolowner[0] == userid and reqstatus == "pending"):
         status = input("Would you like to accept or deny request: ")
         if (status == "accept"):
             return_date = input("What should the return date be (yyyy-mm-dd): ")
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
-            cursor.execute(f"update request_ticket_table set status= '{True}' where reqid= '{reqid}'")
-            cursor.execute(f"update tools_table set availiable= '{False}' where barcode={barcode[0]}")
+            cursor.execute(f"update request_ticket_table set status= 'accepted' where reqid= '{reqid}'")
+            cursor.execute(f"update tools_table set available= '{False}' where barcode={barcode[0]}")
             cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where barcode={barcode[0]}")
             conn.commit()
 
         elif (status == "deny"):
-            cursor.execute(f"delete from request_ticket_table where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set status= 'denied' where reqid= '{reqid}'")
             conn.commit()
 
 
@@ -92,23 +94,24 @@ def return_borrowed_tool(conn, cursor, user):
     
     reqid = input("Which request would you like to manage: ")
     cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
-    toolowner = cursor.fetchone()
-    if (toolowner[0] == userid):
+    userid = cursor.fetchone()
+    cursor.execute(f"select status from request_ticket_table where reqid='{reqid}'")
+    reqstatus = cursor.fetchone()
+    if (user.userid == userid[0] and reqstatus == "accepted"):
+    
         status = input("Would you like to close the request and return the tool?: ")
         if (status == "yes"):
             
             # 1= change the req ticket, make availability == false YES
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
-            cursor.execute(f"update request_ticket_table set status= '{False}' where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set status= 'returned' where reqid= '{reqid}'")
 
             # 2- change tool, make available in tool == true YES
-            cursor.execute(f"update tools_table set availiable= '{True}' where barcode={barcode[0]}")
+            cursor.execute(f"update tools_table set available= '{True}' where barcode={barcode[0]}")
 
             # 3- must store when the tool was returned but where? (ADDING IT TO THE REQUEST TICKET)
             
-            # prompt the user for the date
-            return_date = input("What is the return date (Today's date)?: ")
             # update the return date
-            cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set return_date= CURRENT_DATE where reqid= '{reqid}'")
             conn.commit()
