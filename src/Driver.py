@@ -162,3 +162,9 @@ def driver(conn, cursor):
                         print("Tool name: ")
                     if (order == None):
                         print("No tools borrowed!")
+                    
+
+
+                # RETURN TOOLS
+            elif command[0].lower() == "return":
+                return_borrowed_tool(conn, cursor, account)
