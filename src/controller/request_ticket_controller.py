@@ -38,7 +38,7 @@ def manage_incoming_tickets(conn, cursor, user):
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
             cursor.execute(f"update request_ticket_table set status= 'accepted' where reqid= '{reqid}'")
-            cursor.execute(f"update tools_table set availiable= '{False}' where barcode={barcode[0]}")
+            cursor.execute(f"update tools_table set available= '{False}' where barcode={barcode[0]}")
             cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where barcode={barcode[0]}")
             conn.commit()
 
@@ -92,10 +92,11 @@ def return_borrowed_tool(conn, cursor, user):
     
     reqid = input("Which request would you like to manage: ")
     cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
-    toolowner = cursor.fetchone()
-    if (toolowner[0] == userid):
+    userid = cursor.fetchone()
+    if (user.userid == userid[0]):
+    
         status = input("Would you like to close the request and return the tool?: ")
-        if (status == "accecpted"):
+        if (status == "yes"):
             
             # 1= change the req ticket, make availability == false YES
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
@@ -103,12 +104,10 @@ def return_borrowed_tool(conn, cursor, user):
             cursor.execute(f"update request_ticket_table set status= 'returned' where reqid= '{reqid}'")
 
             # 2- change tool, make available in tool == true YES
-            cursor.execute(f"update tools_table set availiable= '{True}' where barcode={barcode[0]}")
+            cursor.execute(f"update tools_table set available= '{True}' where barcode={barcode[0]}")
 
             # 3- must store when the tool was returned but where? (ADDING IT TO THE REQUEST TICKET)
             
-            # prompt the user for the date
-            return_date = input("What is the return date (Today's date)?: ")
             # update the return date
-            cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set return_date= CURRENT_DATE where reqid= '{reqid}'")
             conn.commit()

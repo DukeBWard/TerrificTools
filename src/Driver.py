@@ -131,3 +131,6 @@ def driver(conn, cursor):
                 if (status == "outgoing"):
                     manage_outgoing_tickets(conn, cursor, account)
                 
+             # return tool
+            elif command[0].lower() == "return":
+                return_borrowed_tool(conn, cursor, account)
