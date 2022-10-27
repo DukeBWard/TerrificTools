@@ -6,7 +6,7 @@ def create_ticket(conn,cursor,user,date_needed,duration,barcode):
     tool = cursor.fetchone()
     ownerid = tool["userid"]
     userid = user.userid
-    if (tool["availiable"] == True): 
+    if (tool["available"] == True): 
         cursor.execute(f"insert into request_ticket_table(dateneeded, duration, status, barcode, userid, toolowner) values\
             ('{date_needed}', '{duration}', 'pending', '{barcode}', '{userid}', '{ownerid}') ")
         conn.commit()
