@@ -148,8 +148,11 @@ def driver(conn, cursor):
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
-                            print("Tool name: {}")
-                            #if row[]
+                            print("Tool name: {}".format(row[0]))
+                            print("User ID who is Borrowing: {}".format(row[1]))
+                            #print("Return Date: {}".format(row[2]))
+                            # if row[](overdue) print {tool name} overdue!
+
                     if (order == None):
                         print("No tools lent!")
                 elif command[1].lower() == "borrowed":
