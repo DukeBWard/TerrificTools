@@ -99,11 +99,10 @@ def return_borrowed_tool(conn, cursor, user):
         print("---------------------")
     
     reqid = input("Which request would you like to manage: ")
-    cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
-    userid = cursor.fetchone()
     cursor.execute(f"select status from request_ticket_table where reqid='{reqid}'")
     reqstatus = cursor.fetchone()
-    if (user.userid == userid[0] and reqstatus == "accepted"):
+    
+    if (reqstatus[0] == "accepted"):
     
         status = input("Would you like to close the request and return the tool?: ")
         if (status == "yes"):
