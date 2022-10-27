@@ -45,6 +45,8 @@ def main():
     except Exception as e:
         print(e)
         print("Connection failed")
+    finally:
+        conn.close()
 
 if __name__ == "__main__":
     main()
