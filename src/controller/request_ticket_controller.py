@@ -8,7 +8,7 @@ def create_ticket(conn,cursor,user,date_needed,duration,barcode):
     userid = user.userid
     if (tool["availiable"] == True): 
         cursor.execute(f"insert into request_ticket_table(dateneeded, duration, status, barcode, userid, toolowner) values\
-            ('{date_needed}', '{duration}', False, '{barcode}', '{userid}', '{ownerid}') ")
+            ('{date_needed}', '{duration}', 'pending', '{barcode}', '{userid}', '{ownerid}') ")
         conn.commit()
     else:
         return False
@@ -37,13 +37,13 @@ def manage_incoming_tickets(conn, cursor, user):
             return_date = input("What should the return date be (yyyy-mm-dd): ")
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
-            cursor.execute(f"update request_ticket_table set status= '{True}' where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set status= 'accepted' where reqid= '{reqid}'")
             cursor.execute(f"update tools_table set availiable= '{False}' where barcode={barcode[0]}")
             cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where barcode={barcode[0]}")
             conn.commit()
 
         elif (status == "deny"):
-            cursor.execute(f"delete from request_ticket_table where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set status= 'denied' where reqid= '{reqid}'")
             conn.commit()
 
 
@@ -95,13 +95,12 @@ def return_borrowed_tool(conn, cursor, user):
     toolowner = cursor.fetchone()
     if (toolowner[0] == userid):
         status = input("Would you like to close the request and return the tool?: ")
-        if (status == "accepted"):
+        if (status == "accecpted"):
             
             # 1= change the req ticket, make availability == false YES
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
-            r = "returned"
-            cursor.execute(f"update request_ticket_table set status= '{r}' where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set status= 'returned' where reqid= '{reqid}'")
 
             # 2- change tool, make available in tool == true YES
             cursor.execute(f"update tools_table set availiable= '{True}' where barcode={barcode[0]}")
