@@ -58,7 +58,14 @@ def driver(conn, cursor):
             
             # HELP
             if command[0].lower() == "help":
-                print("Use one of the following commands: TODO")
+                print("Use one of the following commands: \n\
+                    quit: exit the app.\n\
+                    sign out: sign out of current account\n\
+                    search tools: search <name/barcode/category> <search param>\n\
+                    sort tools: search <name/category> <asc/dsc>\n\
+                    create ticket: cticket\n\
+                    manage ticket: mticekt\n\
+                    return tool: return\n")
                 continue
             
             # QUIT/EXIT
