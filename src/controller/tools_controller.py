@@ -26,3 +26,16 @@ def sort(conn, cursor, param, type):
         cursor.execute(f"select * from tools_table order by type desc")
         records = cursor.fetchall()
     return records
+
+def view(conn, cursor, type):
+    order = None
+    if type == 'available':
+        cursor.execute(f"select * from tools_table where available = '{True}' order by tools_name")
+        order = cursor.fetchall()
+    elif type == 'lent':
+        # cursor.exceute(f"select tools_table.userid,  from tools_table where available = '{False}' and userid = ") #inner join via user id
+        order = cursor.fetchall()
+    elif type == 'borrowed':
+       # cursor.exceute(f"select * from tools_table where available = '{False}'")
+        order = cursor.fetchall()
+    return order
