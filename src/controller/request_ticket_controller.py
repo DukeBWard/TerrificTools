@@ -31,7 +31,9 @@ def manage_incoming_tickets(conn, cursor, user):
     reqid = input("Which request would you like to manage: ")
     cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
     toolowner = cursor.fetchone()
-    if (toolowner[0] == userid):
+    cursor.execute(f"select status from request_ticket_table where reqid='{reqid}'")
+    reqstatus = cursor.fetchone()
+    if (toolowner[0] == userid and reqstatus == "pending"):
         status = input("Would you like to accept or deny request: ")
         if (status == "accept"):
             return_date = input("What should the return date be (yyyy-mm-dd): ")
