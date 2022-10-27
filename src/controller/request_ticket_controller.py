@@ -95,12 +95,13 @@ def return_borrowed_tool(conn, cursor, user):
     toolowner = cursor.fetchone()
     if (toolowner[0] == userid):
         status = input("Would you like to close the request and return the tool?: ")
-        if (status == "yes"):
+        if (status == "accepted"):
             
             # 1= change the req ticket, make availability == false YES
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
-            cursor.execute(f"update request_ticket_table set status= '{False}' where reqid= '{reqid}'")
+            r = "returned"
+            cursor.execute(f"update request_ticket_table set status= '{r}' where reqid= '{reqid}'")
 
             # 2- change tool, make available in tool == true YES
             cursor.execute(f"update tools_table set availiable= '{True}' where barcode={barcode[0]}")
