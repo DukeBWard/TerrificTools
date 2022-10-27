@@ -124,3 +124,10 @@ def driver(conn, cursor):
                 if (status == "outgoing"):
                     manage_outgoing_tickets(conn, cursor, account)
                 
+            # VIEW TOOLS
+            elif command[0].lower() == "available":
+                print()
+            elif command[0].lower() == "lent":
+                print()
+            elif command[0].lower() == "borrowed":
+                print()
