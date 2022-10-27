@@ -124,27 +124,30 @@ def driver(conn, cursor):
                     manage_incoming_tickets(conn, cursor, account)
                 if (status == "outgoing"):
                     manage_outgoing_tickets(conn, cursor, account)
-                
+
             # VIEW TOOLS
             elif command[0].lower() == "view":
                 print()
                 if command[1].lower() == "available":
                     print("Available Tools")
-                    order =  view(conn,cursor,command[1].lower())
+                    order = view(conn,cursor,command[1].lower())
                     if (order != None):
                         for row in order:
                             print("Tool name: {}".format(row[3]))
-                            print()
                     if (order == None):
                         print("No tools available!")
                 elif command[1].lower() == "lent":
                     print("Tools Lent")
+                    order = view(conn, cursor, command[1].lower())
                     if (order != None):
-                        print("Tool name: ")
+                        for row in order:
+                            print("Tool name: {}")
+                            #if row[]
                     if (order == None):
                         print("No tools lent!")
                 elif command[1].lower() == "borrowed":
                     print("Tools Borrowed")
+                    order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         print("Tool name: ")
                     if (order == None):

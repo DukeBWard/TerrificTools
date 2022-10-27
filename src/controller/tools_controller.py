@@ -28,6 +28,7 @@ def sort(conn, cursor, param, type):
     return records
 
 def view(conn, cursor, type):
+    #CURRENT_DATE
     if type == 'available':
         cursor.execute(f"select * from tools_table where available = '{True}' order by tool_name")
         order = cursor.fetchall()
