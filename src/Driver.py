@@ -15,6 +15,7 @@ def driver(conn, cursor):
     command = ""
     account = None
     records = None
+    order = None
     
     while True :
         command = input("Login or sign up: ")
@@ -101,7 +102,7 @@ def driver(conn, cursor):
                 if records != None:
                     for row in records:
                         print("Barcode: {}".format(row[0]))
-                        print("Borrowed: {}".format(row[1]))
+                        print("Available: {}".format(row[1]))
                         print("Description: {}".format(row[2]))
                         print("Tool Name: {}".format(row[3]))
                         print("UserId: {}".format(row[4]))
@@ -125,9 +126,26 @@ def driver(conn, cursor):
                     manage_outgoing_tickets(conn, cursor, account)
                 
             # VIEW TOOLS
-            elif command[0].lower() == "available":
+            elif command[0].lower() == "view":
                 print()
-            elif command[0].lower() == "lent":
-                print()
-            elif command[0].lower() == "borrowed":
-                print()
+                if command[1].lower() == "available":
+                    print("Available Tools")
+                    order =  view(conn,cursor,command[1].lower())
+                    if (order != None):
+                        for row in order:
+                            print("Tool name: {}".format(row[3]))
+                            print()
+                    if (order == None):
+                        print("No tools available!")
+                elif command[1].lower() == "lent":
+                    print("Tools Lent")
+                    if (order != None):
+                        print("Tool name: ")
+                    if (order == None):
+                        print("No tools lent!")
+                elif command[1].lower() == "borrowed":
+                    print("Tools Borrowed")
+                    if (order != None):
+                        print("Tool name: ")
+                    if (order == None):
+                        print("No tools borrowed!")

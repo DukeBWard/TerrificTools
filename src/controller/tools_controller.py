@@ -28,14 +28,14 @@ def sort(conn, cursor, param, type):
     return records
 
 def view(conn, cursor, type):
-    order = None
     if type == 'available':
-        cursor.execute(f"select * from tools_table where available = '{True}' order by tools_name")
+        cursor.execute(f"select * from tools_table where available = '{True}' order by tool_name")
         order = cursor.fetchall()
     elif type == 'lent':
-        # cursor.exceute(f"select tools_table.userid,  from tools_table where available = '{False}' and userid = ") #inner join via user id
+        cursor.execute(f"select  from request_ticket_table where toolowner = '' order by dateneeded ") #inner join via user id
         order = cursor.fetchall()
     elif type == 'borrowed':
-       # cursor.exceute(f"select * from tools_table where available = '{False}'")
+        cursor.execute(f"select tools_table.tool_name, request_ticket_table.userid, request_ticket_table.toolowner  "
+                       f"from tools_table where available = '{False}' inner join ")
         order = cursor.fetchall()
     return order
