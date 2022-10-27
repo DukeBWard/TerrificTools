@@ -33,7 +33,7 @@ def manage_incoming_tickets(conn, cursor, user):
     toolowner = cursor.fetchone()
     cursor.execute(f"select status from request_ticket_table where reqid='{reqid}'")
     reqstatus = cursor.fetchone()
-    if (toolowner[0] == userid and reqstatus == "pending"):
+    if (toolowner[0] == userid and reqstatus[0] == "pending"):
         status = input("Would you like to accept or deny request: ")
         if (status == "accept"):
             return_date = input("What should the return date be (yyyy-mm-dd): ")
@@ -65,11 +65,17 @@ def manage_outgoing_tickets(conn, cursor, user):
         print("---------------------")
 
     reqid = input("Which request would you like to manage: ")
-    cursor.execute(f"select toolowner from request_ticket_table where reqid='{reqid}'")
-    toolowner = cursor.fetchone()
-    if (toolowner[0] == userid):
+    cursor.execute(f"select userid from request_ticket_table where reqid='{reqid}'")
+    user = cursor.fetchone()
+    if (user[0] == userid):
         status = input("Would you like to delete this request: ")
         if (status == "yes"):
+            cursor.execute(f"select status from request_ticket_table where reqid='{reqid}'")
+            reqstatus = cursor.fetchone()
+            if (reqstatus[0] == "accepted"):
+                cursor.execute(f"select barcode from request_ticket_table where reqid='{reqid}'")
+                barcode = cursor.fetchone()
+                cursor.execute(f"update tools_table set available= '{True}' where barcode= {barcode[0]}")
             cursor.execute(f"delete from request_ticket_table where reqid= '{reqid}'")
             conn.commit()
     
