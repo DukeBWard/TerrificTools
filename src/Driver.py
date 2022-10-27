@@ -9,6 +9,7 @@ from controller.catalog_controller import *
 from controller.request_ticket_controller import *
 from models.user_model import user_model
 import pprint
+from datetime import date
 
 def driver(conn, cursor):
     
@@ -146,28 +147,32 @@ def driver(conn, cursor):
                         print("No tools available!")
                 elif command[1].lower() == "lent":
                     print("Tools Lent")
-                    #day = current_day(conn,cursor)
+                    day = date.today()
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
                             print("Tool name: {}".format(row[3])) # name
+                            #print user that has it
                             print("Return by: {}".format(row[20])) # return date
-                            #print(day)
-                            #print("Return Date: {}".format(row[2]))
-                            #if row[20] > current_day(conn,cursor):
-                                #print("This tool is overdue!")
-
+                            if row[20] < day:
+                                print("This tool is overdue!")
+                                print('\n')
                     if (order == None):
                         print("No tools lent!")
                 elif command[1].lower() == "borrowed":
                     print("Tools Borrowed")
+                    day = date.today()
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
-                        print("Tool name: ")
+                        for row in order:
+                            print("Tool name: {}".format(row[3]))  # name
+                            # print tool owner
+                            print("Return by: {}".format(row[20]))  # return date
+                            if row[20] < day:
+                                print("This tool is overdue!")
+                                print('\n')
                     if (order == None):
                         print("No tools borrowed!")
-                    
-
 
                 # RETURN TOOLS
             elif command[0].lower() == "return":

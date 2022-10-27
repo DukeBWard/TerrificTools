@@ -28,7 +28,6 @@ def sort(conn, cursor, param, type):
     return records
 
 def view(conn, cursor, type):
-    #get date w/o time SELECT CAST( GETDATE() AS Date )
     if type == 'available':
         cursor.execute(f"select * from tools_table where available= '{True}' order by tool_name")
         order = cursor.fetchall()
@@ -36,7 +35,7 @@ def view(conn, cursor, type):
         cursor.execute(f"select * from tools_table "
                        f"inner join user_table on tools_table.userid = user_table.userid "
                        f"inner join request_ticket_table on request_ticket_table.barcode = tools_table.barcode  "
-                       f"where request_ticket_table.status = 'accepted'order by request_ticket_table.return_date asc")
+                       f"where request_ticket_table.status = 'accepted' order by request_ticket_table.return_date asc")
         order = cursor.fetchall()
     elif type == 'borrowed':
         cursor.execute(f"select * from request_ticket_table "
@@ -44,8 +43,3 @@ def view(conn, cursor, type):
                        f"inner join user_table on request_ticket_table.toolowner = user_table.userid ")
         order = cursor.fetchall()
     return order
-
-def current_day(conn,cursor):
-    cursor.execute(f"SELECT CAST( GETDATE() AS Date ) ")
-    day = cursor.fetchall()
-    return day
