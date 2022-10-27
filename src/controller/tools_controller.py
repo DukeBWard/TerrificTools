@@ -33,12 +33,19 @@ def view(conn, cursor, type):
         cursor.execute(f"select * from tools_table where available= '{True}' order by tool_name")
         order = cursor.fetchall()
     elif type == 'lent':
-        cursor.execute(f"select tools_table.tool_name, request_ticket_table.userid from tools_table "
-                       f"inner join request_ticket_table on tools_table.userid = request_ticket_table.toolowner where request_ticket_table.status = 'accepted' ")
-                       # f"where status= accepted order by dateneeded ") #inner join via user id
+        cursor.execute(f"select * from tools_table "
+                       f"inner join user_table on tools_table.userid = user_table.userid "
+                       f"inner join request_ticket_table on request_ticket_table.barcode = tools_table.barcode  "
+                       f"where request_ticket_table.status = 'accepted'order by request_ticket_table.return_date asc")
         order = cursor.fetchall()
     elif type == 'borrowed':
-        cursor.execute(f"select tools_table.tool_name, request_ticket_table.userid, request_ticket_table.toolowner  "
-                       f"from tools_table where available = '{False}' inner join ")
+        cursor.execute(f"select * from request_ticket_table "
+                       f"inner join tools_tables on request_ticket_table.barcode = tools_table.barcode  "
+                       f"inner join user_table on request_ticket_table.toolowner = user_table.userid ")
         order = cursor.fetchall()
     return order
+
+def current_day(conn,cursor):
+    cursor.execute(f"SELECT CAST( GETDATE() AS Date ) ")
+    day = cursor.fetchall()
+    return day

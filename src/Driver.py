@@ -16,6 +16,7 @@ def driver(conn, cursor):
     account = None
     records = None
     order = None
+    day = None
 
     while True :
         command = input("Login or sign up: ")
@@ -145,13 +146,16 @@ def driver(conn, cursor):
                         print("No tools available!")
                 elif command[1].lower() == "lent":
                     print("Tools Lent")
+                    #day = current_day(conn,cursor)
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
-                            print("Tool name: {}".format(row[0]))
-                            print("User ID who is Borrowing: {}".format(row[1]))
+                            print("Tool name: {}".format(row[3])) # name
+                            print("Return by: {}".format(row[20])) # return date
+                            #print(day)
                             #print("Return Date: {}".format(row[2]))
-                            # if row[](overdue) print {tool name} overdue!
+                            #if row[20] > current_day(conn,cursor):
+                                #print("This tool is overdue!")
 
                     if (order == None):
                         print("No tools lent!")
