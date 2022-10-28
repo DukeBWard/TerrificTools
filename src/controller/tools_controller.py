@@ -1,3 +1,12 @@
+def create_tool(conn, cursor, user):
+    description = input("Enter description for this tool: ")
+    tool_name = input("Enter name for this tool: ")
+    category = input("Enter category for this tool: ")
+    borrowed = False;
+    cursor.execute(f"insert into tools_table(available, description, tool_name, userid, type) values\
+                ('{borrowed}', '{description}', '{tool_name}', '{user.userid}', '{category}') ")
+    conn.commit()
+
 def search(conn, cursor, param, type):
     records = None
     if type == 'barcode':

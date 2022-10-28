@@ -11,23 +11,21 @@ from models.user_model import user_model
 import pprint
 from datetime import date
 
+
 def driver(conn, cursor):
-    
     command = ""
     account = None
     records = None
     order = None
     username = None
 
-
-
-    while True :
+    while True:
         command = input("Login or sign up: ")
-        
+
         if command.lower() == "help":
             print("Use one of the following commands: TODO")
             continue
-        
+
         elif command.lower() == "quit" or command.lower() == "exit":
             return
 
@@ -35,7 +33,7 @@ def driver(conn, cursor):
             user = input("Username: ")
             password = input("Password: ")
             account = login(conn, cursor, user, password)
-            if not account: 
+            if not account:
                 print("Login failed.")
                 signupIn = input("Would you like to sign up? (y/n)")
                 if signupIn.lower() == 'y':
@@ -43,7 +41,7 @@ def driver(conn, cursor):
                     password = input("Password: ")
                     email = input("Email: ")
                     account = signup(conn, cursor, user, password, email)
-                    print("User: "+user+" signed up")
+                    print("User: " + user + " signed up")
                     continue
                 else:
                     return
@@ -56,11 +54,11 @@ def driver(conn, cursor):
             # 
             # Continue from this point assuming logged in or signed up
             # 
-        
+
         while True and account:
             command = input(account.username + ": ")
             command = command.split()
-            
+
             # HELP
             if command[0].lower() == "help":
                 print("Use one of the following commands: \n\
@@ -72,11 +70,11 @@ def driver(conn, cursor):
                     manage ticket: mticekt\n\
                     return tool: return\n")
                 continue
-            
+
             # QUIT/EXIT
             elif command[0].lower() == "quit" or command[0].lower() == "exit":
                 return
-            
+
             # SIGNOUT
             elif command[0].lower() == "sign out" or command[0].lower() == "signout":
                 account = None
@@ -85,28 +83,28 @@ def driver(conn, cursor):
             # SEARCH AND SORT
             elif command[0].lower() == "search" or command[0].lower() == "find":
                 print()
-             
+
                 if command[1].lower() == "barcode":
-                    records = search(conn,cursor,command[2],"barcode")
+                    records = search(conn, cursor, command[2], "barcode")
 
                 elif command[1].lower() == "name":
                     param = " ".join(command[2:])
                     if len(command) == 3:
                         if command[2] == "asc" or command[2] == "desc":
                             records = sort(conn, cursor, command[2].lower(), command[1].lower())
-                        else: 
-                            records = search(conn,cursor,param,"name")
+                        else:
+                            records = search(conn, cursor, param, "name")
                     else:
-                        records = search(conn,cursor,param,"name")
-                        
+                        records = search(conn, cursor, param, "name")
+
                 elif command[1].lower() == "category":
                     if len(command) == 3:
                         if command[2] == "asc" or command[2] == "desc":
                             records = sort(conn, cursor, command[2].lower(), command[1].lower())
                         else:
-                            records = search(conn,cursor,command[2],"category")
+                            records = search(conn, cursor, command[2], "category")
                     else:
-                        records = search(conn,cursor,command[2],"category")
+                        records = search(conn, cursor, command[2], "category")
 
                 if records == None:
                     print("Could not find that item.  Try again.")
@@ -141,7 +139,7 @@ def driver(conn, cursor):
                 print()
                 if command[1].lower() == "available":
                     print("Available Tools")
-                    order = view(conn,cursor,command[1].lower())
+                    order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
                             print("Tool name: {}".format(row[3]))
@@ -154,9 +152,9 @@ def driver(conn, cursor):
                     if (order != None):
                         for row in order:
                             username = getuser(conn, cursor, row[18])
-                            print("Tool name: {}".format(row[3])) # name
-                            print("User borrowing tool: "+ ''.join(username[0]))
-                            print("Return by: {}".format(row[20])) # return date
+                            print("Tool name: {}".format(row[3]))  # name
+                            print("User borrowing tool: " + ''.join(username[0]))
+                            print("Return by: {}".format(row[20]))  # return date
                             if row[20] < day:
                                 print("This tool is overdue!")
                                 print('\n')
@@ -182,3 +180,28 @@ def driver(conn, cursor):
                 # RETURN TOOLS
             elif command[0].lower() == "return":
                 return_borrowed_tool(conn, cursor, account)
+
+            elif command[0].lower() == 'ccategory':
+                create_category(conn, cursor)
+
+            elif command[0].lower() == "printcatalog":
+                print_catalog(conn, cursor, account)
+
+            elif command[0].lower() == "editdescription":
+                edit_description(conn, cursor)
+
+            elif command[0].lower() == "edittoolname":
+                edit_tool_name(conn, cursor)
+
+            elif command[0].lower() == "addcategory":
+                add_category(conn, cursor)
+
+            elif command[0].lower() == "removecategory":
+                remove_category(conn, cursor)
+
+            elif command[0].lower() == "removetool":
+                remove_tool(conn, cursor)
+
+            elif command[0].lower() == "createtool":
+                create_tool(conn, cursor, account)
+
