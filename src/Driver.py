@@ -23,7 +23,10 @@ def driver(conn, cursor):
         command = input("Login or sign up: ")
 
         if command.lower() == "help":
-            print("Use one of the following commands: TODO")
+            print("Use one of the following commands: \n\
+            signup: create a new account\n\
+            login: sign into an account\n\
+            quit: exit the app\n")
             continue
 
         elif command.lower() == "quit" or command.lower() == "exit":
