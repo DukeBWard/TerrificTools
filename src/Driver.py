@@ -74,12 +74,12 @@ def driver(conn, cursor):
                     return tool: return\n\
                     view: view <available/lent/borrowed>\n\
                     create category: createcategory\n\
-                    add category: addcategory\n\
-                    remove category: removecategory\n\
                     remove tool from catalog: removetool\n\
                     create tool into your catalog: createtool\n\
                     print catalog: printcatalog\n\
                     ")
+                    # add category: addcategory\n\
+                    # remove category: removecategory\n\
                 continue
 
             # QUIT/EXIT
