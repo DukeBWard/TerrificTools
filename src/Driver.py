@@ -68,7 +68,15 @@ def driver(conn, cursor):
                     sort tools: search <name/category> <asc/dsc>\n\
                     create ticket: cticket\n\
                     manage ticket: mticekt\n\
-                    return tool: return\n")
+                    return tool: return\n\
+                    view: view <available/lent/borrowed>\n\
+                    create category: createcategory\n\
+                    add category: addcategory\n\
+                    remove category: removecategory\n\
+                    remove tool from catalog: removetool\n\
+                    create tool into your catalog: createtool\n\
+                    print catalog: printcatalog\n\
+                    ")
                 continue
 
             # QUIT/EXIT
@@ -181,7 +189,7 @@ def driver(conn, cursor):
             elif command[0].lower() == "return":
                 return_borrowed_tool(conn, cursor, account)
 
-            elif command[0].lower() == 'ccategory':
+            elif command[0].lower() == 'createcategory':
                 create_category(conn, cursor)
 
             elif command[0].lower() == "printcatalog":
