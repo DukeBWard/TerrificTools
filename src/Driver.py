@@ -17,7 +17,9 @@ def driver(conn, cursor):
     account = None
     records = None
     order = None
-    day = None
+    username = None
+
+
 
     while True :
         command = input("Login or sign up: ")
@@ -151,8 +153,9 @@ def driver(conn, cursor):
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
+                            username = getuser(conn, cursor, row[18])
                             print("Tool name: {}".format(row[3])) # name
-                            #print user that has it
+                            print("User borrowing tool: {}".format(username[0]))
                             print("Return by: {}".format(row[20])) # return date
                             if row[20] < day:
                                 print("This tool is overdue!")
@@ -165,9 +168,9 @@ def driver(conn, cursor):
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
-                            print("Tool name: {}".format(row[3]))  # name
-                            # print tool owner
-                            print("Return by: {}".format(row[20]))  # return date
+                            print("{}".format(row[0]))  # avail
+                            print("{}".format(row[1]))  # descript
+
                             if row[20] < day:
                                 print("This tool is overdue!")
                                 print('\n')

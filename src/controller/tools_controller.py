@@ -38,8 +38,14 @@ def view(conn, cursor, type):
                        f"where request_ticket_table.status = 'accepted' order by request_ticket_table.return_date asc")
         order = cursor.fetchall()
     elif type == 'borrowed':
-        cursor.execute(f"select * from request_ticket_table "
-                       f"inner join tools_tables on request_ticket_table.barcode = tools_table.barcode  "
-                       f"inner join user_table on request_ticket_table.toolowner = user_table.userid ")
+        cursor.execute(f"select * from tools_table "
+                       f"inner join user_table on tools_table.userid = user_table.userid "
+                       f"inner join request_ticket_table on request_ticket_table.barcode = tools_table.barcode  "
+                       f"where request_ticket_table.status = 'accepted' order by request_ticket_table.return_date asc")
         order = cursor.fetchall()
     return order
+
+def getuser(conn,cursor,param):
+    cursor.execute(f"select username from user_table where userid = '{param}'")
+    username = cursor.fetchall()
+    return username
