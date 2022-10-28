@@ -155,7 +155,7 @@ def driver(conn, cursor):
                         for row in order:
                             username = getuser(conn, cursor, row[18])
                             print("Tool name: {}".format(row[3])) # name
-                            print("User borrowing tool: {}".format(username[0]))
+                            print("User borrowing tool: "+ ''.join(username[0]))
                             print("Return by: {}".format(row[20])) # return date
                             if row[20] < day:
                                 print("This tool is overdue!")
@@ -168,8 +168,10 @@ def driver(conn, cursor):
                     order = view(conn, cursor, command[1].lower())
                     if (order != None):
                         for row in order:
-                            print("{}".format(row[0]))  # avail
-                            print("{}".format(row[1]))  # descript
+                            username = getuser(conn, cursor, row[19])
+                            print("Tool name: {}".format(row[3]))
+                            print("Tool owner: " + ''.join(username[0]))
+                            print("Return by: {}".format(row[20]))
 
                             if row[20] < day:
                                 print("This tool is overdue!")
