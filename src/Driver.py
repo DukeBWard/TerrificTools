@@ -76,7 +76,7 @@ def driver(conn, cursor):
                 return
 
             # SIGNOUT
-            elif command[0].lower() == "sign out" or command[0].lower() == "signout":
+            elif command[0].lower() == "sign" and command[1].lower() == "out" or command[0].lower() == "signout":
                 account = None
                 break
 
