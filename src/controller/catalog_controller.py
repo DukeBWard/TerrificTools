@@ -57,3 +57,24 @@ def remove_category(conn, cursor):
     cursor.execute(f"select * from tools_table where barcode={tool_barcode}")
     categoryArray = cursor.fetchone()
     categoryArray[5].remove(category)
+
+
+def view_dashboard(conn, cursor, user):
+    
+    userid = user.userid
+    
+    cursor.execute(f"select count(*) from tools_table where userid={userid}")
+    count = cursor.fetchall()
+    print("Number of tools available from your catalog: " + str(count[0][0]))
+    
+    # Lent tool means it is currently being used by someone else and not returned (not a previous lent)
+    cursor.execute(f"select count(*) from request_ticket_table where toolowner={userid} and status = 'accepted'")
+    lent = cursor.fetchall()
+    print("Number of tools you lent: " + str(lent[0][0]))
+    
+    # borrowed means, it is currently in possesion of the user (not previously borrowed and returned)
+    cursor.execute(f"select count(*) from request_ticket_table where userid={userid} and status = 'accepted'")
+    borrowed = cursor.fetchall()
+    print("Number of tools you borrowed: " + str(borrowed[0][0]))
+    
+    
