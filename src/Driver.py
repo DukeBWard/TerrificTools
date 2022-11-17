@@ -220,5 +220,9 @@ def driver(conn, cursor):
             elif command[0].lower() == "dashboard":
                 view_dashboard(conn, cursor, account)
 
+            #STATS
+            elif command[0].lower() == "stats":
+                stats(conn, cursor, account)
+
 
 

@@ -38,5 +38,17 @@ def signup(conn, cursor, user, password, email):
             conn.commit()   # NEED THIS TO UPDATE/INSERT CURRENT CHANGES
             return current_user
     
-
-    
+def stats(conn, cursor, user):
+    cursor.execute(f"select tools_table.tool_name, tools_table.barcode, count(request_ticket_table.barcode) \
+    from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} \
+    group by tools_table.barcode order by count(request_ticket_table.barcode) desc limit 10")
+    records = cursor.fetchall()
+    if records:
+        for row in records:
+                            print("Tool name: {}".format(row[0]))
+                            print("Barcode: {}".format(row[1]))
+                            print("Count: {}".format(row[2]))
+                            print()
+    else:
+        print("You have not borrowed any tools.")
+        print()
