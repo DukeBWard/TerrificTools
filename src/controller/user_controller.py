@@ -53,13 +53,13 @@ def stats(conn, cursor, user):
         print("You have not borrowed any tools.")
         print()
     print("Most Borrowed tools")
-    cursor.execute(f"select tools_table.barcode, tools_table.tool_name, count(request_ticket_table.barcode) \
-                    from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} \
-                   group by tools_table.barcode, request_ticket_table.dateneeded, request_ticket_table.return_date order by (request_ticket_table.return_date - request_ticket_table.dateneeded) desc limit 10")
+    cursor.execute(f"select tools_table.barcode, tools_table.tool_name, Sum(request_ticket_table.return_date - request_ticket_table.dateneeded)\
+                    from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} and request_ticket_table.return_date is not null \
+                   group by tools_table.barcode, request_ticket_table.dateneeded, request_ticket_table.return_date order by sum(request_ticket_table.return_date - request_ticket_table.dateneeded) desc limit 10")
     records = cursor.fetchall()
     if records:
         for row in records:
             print("Tool name: {}".format(row[0]))
             print("Barcode: {}".format(row[1]))
-            print("Count: {}".format(row[2]))
+            print("Time: {}".format(row[2]))
             print()
