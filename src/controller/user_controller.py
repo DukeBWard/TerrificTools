@@ -39,6 +39,7 @@ def signup(conn, cursor, user, password, email):
             return current_user
     
 def stats(conn, cursor, user):
+    print("Most borrowed tools\n")
     cursor.execute(f"select tools_table.tool_name, tools_table.barcode, count(request_ticket_table.barcode) \
     from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} \
     group by tools_table.barcode order by count(request_ticket_table.barcode) desc limit 10")
@@ -52,7 +53,7 @@ def stats(conn, cursor, user):
     else:
         print("You have not borrowed any tools.")
         print()
-    print("Most Borrowed tools")
+    print("Most lent tools\n")
     cursor.execute(f"select tools_table.barcode, tools_table.tool_name, Sum(request_ticket_table.return_date - request_ticket_table.dateneeded)\
                     from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} and request_ticket_table.return_date is not null \
                    group by tools_table.barcode, request_ticket_table.dateneeded, request_ticket_table.return_date order by sum(request_ticket_table.return_date - request_ticket_table.dateneeded) desc limit 10")
