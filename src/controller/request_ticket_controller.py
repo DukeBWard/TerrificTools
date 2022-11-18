@@ -10,6 +10,20 @@ def create_ticket(conn,cursor,user,date_needed,duration,barcode):
         cursor.execute(f"insert into request_ticket_table(dateneeded, duration, status, barcode, userid, toolowner) values\
             ('{date_needed}', '{duration}', 'pending', '{barcode}', '{userid}', '{ownerid}') ")
         conn.commit()
+        cursor.execute(f"select tools_table.tool_name, tools_table.barcode, tools_table.available, count(tools_table.barcode) \
+        from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode \
+        where request_ticket_table.dateneeded in (select request_ticket_table.dateneeded from request_ticket_table where barcode= '{barcode}') \
+        and request_ticket_table.userid in (select request_ticket_table.userid from request_ticket_table where barcode= '{barcode}') \
+        group by tools_table.barcode order by count(request_ticket_table.barcode) desc limit 5")
+        records = cursor.fetchall()
+        if records:
+            print()
+            for row in records:
+                print("Tool name: {}".format(row[0]))
+                print("Barcode: {}".format(row[1]))
+                print("Availability: {}".format(row[2]))
+                print("Count: {}".format(row[3]))
+                print()
     else:
         return False
     
