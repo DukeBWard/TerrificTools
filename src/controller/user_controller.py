@@ -40,27 +40,27 @@ def signup(conn, cursor, user, password, email):
     
 def stats(conn, cursor, user):
     print("Most borrowed tools\n")
-    cursor.execute(f"select tools_table.tool_name, tools_table.barcode, count(request_ticket_table.barcode) \
+    cursor.execute(f"select tools_table.barcode, tools_table.tool_name,  count(request_ticket_table.barcode) \
     from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} \
     group by tools_table.barcode order by count(request_ticket_table.barcode) desc limit 10")
     records = cursor.fetchall()
     if records:
         for row in records:
-                            print("Tool name: {}".format(row[0]))
-                            print("Barcode: {}".format(row[1]))
+                            print("Barcode: {}".format(row[0]))
+                            print("Tool name: {}".format(row[1]))
                             print("Count: {}".format(row[2]))
                             print()
     else:
         print("You have not borrowed any tools.")
         print()
     print("Most lent tools\n")
-    cursor.execute(f"select tools_table.barcode, tools_table.tool_name, Sum(request_ticket_table.return_date - request_ticket_table.dateneeded)\
-                    from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.userid = {user.userid} and request_ticket_table.return_date is not null \
+    cursor.execute(f"select tools_table.barcode, tools_table.tool_name, request_ticket_table.return_date - request_ticket_table.dateneeded\
+                    from request_ticket_table full outer join tools_table on request_ticket_table.barcode = tools_table.barcode where request_ticket_table.toolowner = {user.userid} and request_ticket_table.return_date is not null \
                    group by tools_table.barcode, request_ticket_table.dateneeded, request_ticket_table.return_date order by sum(request_ticket_table.return_date - request_ticket_table.dateneeded) desc limit 10")
     records = cursor.fetchall()
     if records:
         for row in records:
-            print("Tool name: {}".format(row[0]))
-            print("Barcode: {}".format(row[1]))
+            print("Barcode: {}".format(row[0]))
+            print("Tool name: {}".format(row[1]))
             print("Time: {}".format(row[2]))
             print()
