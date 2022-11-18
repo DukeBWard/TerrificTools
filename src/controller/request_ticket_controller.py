@@ -54,6 +54,7 @@ def manage_incoming_tickets(conn, cursor, user):
             cursor.execute(f"select barcode from request_ticket_table where reqid= '{reqid}'")
             barcode = cursor.fetchone()
             cursor.execute(f"update request_ticket_table set status= 'accepted' where reqid= '{reqid}'")
+            cursor.execute(f"update request_ticket_table set dateneeded= 'CURRENT_DATE' where reqid= '{reqid}'")
             cursor.execute(f"update tools_table set available= '{False}' where barcode={barcode[0]}")
             cursor.execute(f"update request_ticket_table set return_date= '{return_date}' where barcode={barcode[0]}")
             conn.commit()
