@@ -77,6 +77,7 @@ def driver(conn, cursor):
                     remove tool from catalog: removetool\n\
                     create tool into your catalog: createtool\n\
                     print catalog: printcatalog\n\
+                    stats: print most borrowed/most lent\n\
                     ")
                     # add category: addcategory\n\
                     # remove category: removecategory\n\
