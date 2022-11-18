@@ -70,14 +70,14 @@ def driver(conn, cursor):
                     search tools: search <name/barcode/category> <search param>\n\
                     sort tools: search <name/category> <asc/dsc>\n\
                     create ticket: cticket\n\
-                    manage ticket: mticekt\n\
+                    manage ticket: mticket\n\
                     return tool: return\n\
                     view: view <available/lent/borrowed>\n\
                     create category: createcategory\n\
                     remove tool from catalog: removetool\n\
                     create tool into your catalog: createtool\n\
                     print catalog: printcatalog\n\
-                    stats: print most borrowed/most lent\n\
+                    show most borrowed/lent: stats\n\
                     ")
                     # add category: addcategory\n\
                     # remove category: removecategory\n\
